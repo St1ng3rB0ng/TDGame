@@ -1,7 +1,7 @@
 package logic.entities;
 
 import logic.actions.*;
-
+import logic.actions.Calculation;
 public class Unit implements Movable, Attackable {
     private int y; // position Height
     private int x; // position Length
@@ -12,8 +12,10 @@ public class Unit implements Movable, Attackable {
     private int hp;
     private int actions;
     private int damage;
+    private int resistance;
+    private int distanceOfAtk;
 
-    public Unit(String name, int hp, int strength, int agility, int intelligence, int actions,int damage, int y, int x, Map map) {
+    public Unit(String name, int hp, int strength, int agility, int intelligence, int actions, int damage,int resistance,int distanceOfAtk, int y, int x, Map map) {
         setName(name);
         setHp(hp);
         setStrength(strength);
@@ -21,6 +23,8 @@ public class Unit implements Movable, Attackable {
         setIntelligence(intelligence);
         setActions(actions);
         setDamage(damage);
+        setResistance(resistance);
+        setDistanceOfAtk(distanceOfAtk);
         setCoordinate(y, x, map);
     }
 
@@ -35,7 +39,7 @@ public class Unit implements Movable, Attackable {
     }
 
     public void setDamage(int damage) {
-        if(damage>=0)this.damage = damage;
+        if (damage >= 0) this.damage = damage;
     }
 
     public void setActions(int actions) {
@@ -62,6 +66,9 @@ public class Unit implements Movable, Attackable {
         if (strength >= 0) this.strength = strength;
     }
 
+    public void setResistance(int resistance) {if (resistance >= 0) this.resistance = resistance;}
+
+    public void setDistanceOfAtk(int distanceOfAtk) {if(distanceOfAtk>0)this.distanceOfAtk = distanceOfAtk;}
 
     public int getX() {
         return x;
@@ -99,9 +106,12 @@ public class Unit implements Movable, Attackable {
         return agility;
     }
 
+    public int getResistance() { return resistance; }
+
+    public int getDistanceOfAtk() {return distanceOfAtk;}
 
     public boolean move(int newY, int newX, Map map) {
-        if (actions > 0 && map.isValidPosition(newX, newY)) {
+        if (actions > 0 && map.isValidPosition(newX, newY) && Calculation.difference(getX(),newX)<2 &&Calculation.difference(getY(),newY)<2) {
             setCoordinate(newY, newX, map);
             actions--;
             return true;

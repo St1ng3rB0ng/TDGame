@@ -7,7 +7,7 @@ public class Tester {
 
         // Створення юнітів
         Swordsman unit1 = new Swordsman("Swordsman", 5, 15, map);
-        Unit unit2 = new Unit("Enemy", 80, 7, 8, 4, 2, 6, 5,16, map);
+        Unit unit2 = new Unit("Enemy", 80, 7, 8, 4, 2, 6,1, 2,2,16, map);
 
         // Вивід карти
         for (int y = 0; y < map.getHeight(); y++) {
