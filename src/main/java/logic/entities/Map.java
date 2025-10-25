@@ -1,48 +1,56 @@
 package logic.entities;
 
 public class Map {
-    private int length; // X
-    private int height; // Y
-    private int[][] field; // 0 - free, 1 - occupied,
+    private int length;
+    private int height;
+    private boolean[][] occupiedCells;
+
+    public Map(int length, int height) {
+        this.length = length;
+        this.height = height;
+        this.occupiedCells = new boolean[height][length];
+    }
+
+    public int getLength() { return length; }
+    public int getHeight() { return height; }
+
+    /**
+     * НОВИЙ (перевантажений) метод.
+     * Дозволяє перевірити, чи валідна позиція,
+     * ігноруючи, чи вона "зайнята" (потрібно для малювання).
+     */
+    public boolean isValidPosition(int x, int y, boolean checkOccupied) {
+        // 1. Перевірка, чи координати в межах карти
+        if (x < 0 || x >= length || y < 0 || y >= height) {
+            return false;
+        }
+        // 2. Перевірка, чи клітинка зайнята (тільки якщо checkOccupied = true)
+        if (checkOccupied && occupiedCells[y][x]) {
+            return false;
+        }
+        // Позиція валідна
+        return true;
+    }
+
+    /**
+     * Старий метод, тепер він просто викликає новий
+     * (перевіряє і межі, і зайнятість).
+     */
+    public boolean isValidPosition(int x, int y) {
+        return isValidPosition(x, y, true); // true = перевірити зайнятість
+    }
 
     public void placeUnit(int x, int y) {
-        if (isValidPosition(x, y)) {
-            field[x][y] = 1;
+        // Використовуємо isValidPosition(x, y, false), щоб дозволити розміщення
+        // (isValidPosition(x, y, true) завжди поверне false для вільної клітинки)
+        if (isValidPosition(x, y, false)) {
+            occupiedCells[y][x] = true;
         }
     }
 
     public void removeUnit(int x, int y) {
-        if (x >= 0 && x < length && y >= 0 && y < height) {
-            field[x][y] = 0;
-        }
-    }
-
-    public Map(int length, int height) {
-        if (length <= 0 || height <= 0) {
-            throw new IllegalArgumentException("Length and height must be positive");
-        }
-        this.length = length;
-        this.height = height;
-        this.field = new int[length][height];
-    }
-
-    public int getLength() {
-        return length;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public boolean isValidPosition(int x, int y) {
-        return x >= 0 && x < length && y >= 0 && y < height && field[x][y] == 0;
-    }
-
-    public void setNewMap(int length, int height) {
-        if (length > 0 && height > 0) {
-            this.length = length;
-            this.height = height;
-            this.field = new int[length][height];
+        if (isValidPosition(x, y, false)) { // Перевіряємо лише межі
+            occupiedCells[y][x] = false;
         }
     }
 }
