@@ -9,7 +9,7 @@ public class EnemyView extends StackPane {
     // --- Константи ---
 
     // Шлях до зображення
-    private static final String IMAGE_PATH = "/enemy.jfif"; // Припустимий шлях
+    private static final String IMAGE_PATH = "/enemy.png"; // Припустимий шлях
 
     // Завантажуємо зображення ОДИН РАЗ і зберігаємо його.
     private static final Image ENEMY_IMAGE = new Image(
